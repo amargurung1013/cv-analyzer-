@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CV</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="hero">
+
+        <h1>CV</h1>
+
+        <p>
+            Resume Intelligence System
+        </p>
+
+    </div>
+
+    <form
+        action="/analyze"
+        method="POST"
+        enctype="multipart/form-data"
+        class="analyze-form"
+    >
+
+        <label class="upload-label">
+
+            ↑ Drop your resume
+
+            <span>
+                PDF • OCR Supported
+            </span>
+
+            <input
+                type="file"
+                name="resume"
+                required
+            >
+
+        </label>
+
+        <button type="submit">
+            Analyze Resume
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

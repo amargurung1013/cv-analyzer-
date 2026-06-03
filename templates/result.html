@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Analysis</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="result-container">
+
+    <div class="top-bar">
+        <h1>CV</h1>
+
+        <a href="/">Analyze Another Resume</a>
+    </div>
+
+    <div class="score-card">
+
+        <div class="score-label">
+            Resume Score
+        </div>
+
+        <div class="score-number">
+            {{ sections.score }}
+        </div>
+
+    </div>
+
+    <div class="analysis-grid">
+
+        <div class="analysis-card">
+            <h2>Professional Summary</h2>
+            <p>{{ sections.summary }}</p>
+        </div>
+
+        <div class="analysis-card">
+            <h2>Strengths</h2>
+            <pre>{{ sections.strengths }}</pre>
+        </div>
+
+        <div class="analysis-card">
+            <h2>Weaknesses</h2>
+            <pre>{{ sections.weaknesses }}</pre>
+        </div>
+
+        <div class="analysis-card">
+            <h2>ATS Analysis</h2>
+            <p>{{ sections.ats }}</p>
+        </div>
+
+        <div class="analysis-card">
+            <h2>Suggestions</h2>
+            <pre>{{ sections.suggestions }}</pre>
+        </div>
+
+        <div class="analysis-card">
+            <h2>Career Level</h2>
+            <p>{{ sections.career_level }}</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
