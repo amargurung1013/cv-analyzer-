@@ -7,6 +7,7 @@
     <title>CV</title>
 
     <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js" defer></script>
 </head>
 
 <body>
@@ -24,23 +25,29 @@
     </div>
 
     <form
-        action="/analyze"
+        action="/result"
         method="POST"
         enctype="multipart/form-data"
         class="analyze-form"
     >
 
-        <label class="upload-label">
+        <label class="upload-label" for="resume-upload">
 
-            ↑ Drop your resume
+            <span class="upload-icon">↑</span>
 
-            <span>
+            <span class="upload-title">
+                Drop your resume
+            </span>
+
+            <span class="upload-hint">
                 PDF • OCR Supported
             </span>
 
             <input
+                id="resume-upload"
                 type="file"
                 name="resume"
+                accept="application/pdf,.pdf"
                 required
             >
 

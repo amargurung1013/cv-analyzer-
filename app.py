@@ -1,12 +1,13 @@
 from fastapi import FastAPI, Request, UploadFile, File
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-import os
-import shutil
+from pathlib import Path
 
 from utils import extract_text_from_pdf
 from graph import analyze_resume
+from database import save_resume_analysis
 
 app = FastAPI()
 
@@ -28,20 +29,25 @@ def home(request: Request):
 
 
 # ANALYZE RESUME
-@app.post("/analyze")
+@app.api_route("/analyze", methods=["GET", "POST"])
+@app.api_route("/result", methods=["GET", "POST"])
 async def analyze_cv(
     request: Request,
-    resume: UploadFile = File(...)
+    resume: UploadFile | None = File(None)
 ):
+    if request.method == "GET" or resume is None:
+        return RedirectResponse(url="/")
 
     # CREATE UPLOADS FOLDER
-    os.makedirs("uploads", exist_ok=True)
+    upload_dir = Path("uploads")
+    upload_dir.mkdir(exist_ok=True)
 
     # SAVE PDF
-    file_path = f"uploads/{resume.filename}"
+    safe_filename = Path(resume.filename).name
+    file_path = upload_dir / safe_filename
 
     with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(resume.file, buffer)
+        buffer.write(await resume.read())
 
     # EXTRACT TEXT
     resume_text = extract_text_from_pdf(file_path)
@@ -96,13 +102,18 @@ async def analyze_cv(
         if current:
             sections[current] += line + "\n"
 
+    # SAVE ANALYSIS TO SUPABASE
+    try:
+        save_resume_analysis(safe_filename, sections)
+    except Exception as error:
+        print(f"Supabase save failed: {error}")
+
     # RETURN RESULT PAGE
     return templates.TemplateResponse(
         request=request,
         name="result.html",
         context={
-           "filename": resume.filename, 
+           "filename": safe_filename,
            "sections": sections
         }
     )
-

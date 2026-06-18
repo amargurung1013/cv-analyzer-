@@ -143,6 +143,10 @@ button {
 
     background: #0b0b0b;
     color: white;
+
+    max-width: 1180px;
+
+    margin: 0 auto;
 }
 
 .top-bar {
@@ -164,11 +168,27 @@ button {
 
     border: 1px solid rgba(255,255,255,0.08);
 
-    border-radius: 24px;
+    border-radius: 16px;
 
     padding: 2rem;
 
-    margin-bottom: 2rem;
+    margin: 0 auto 2rem;
+
+    max-width: 520px;
+
+    text-align: center;
+
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.score-card:hover {
+    transform: translateY(-6px) scale(1.02);
+
+    background: #131722;
+
+    border-color: rgba(59,130,246,0.55);
+
+    box-shadow: 0 18px 45px rgba(0,0,0,0.35), 0 0 0 1px rgba(59,130,246,0.12);
 }
 
 .score-label {
@@ -188,6 +208,10 @@ button {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 
     gap: 1.5rem;
+
+    justify-items: center;
+
+    align-items: stretch;
 }
 
 .analysis-card {
@@ -195,9 +219,29 @@ button {
 
     border: 1px solid rgba(255,255,255,0.08);
 
-    border-radius: 24px;
+    border-radius: 16px;
 
     padding: 2rem;
+
+    width: 100%;
+
+    max-width: 520px;
+
+    text-align: center;
+
+    transform: scale(1);
+
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.analysis-card:hover {
+    transform: translateY(-8px) scale(1.03);
+
+    background: #131722;
+
+    border-color: rgba(59,130,246,0.5);
+
+    box-shadow: 0 18px 45px rgba(0,0,0,0.35), 0 0 0 1px rgba(59,130,246,0.12);
 }
 
 .analysis-card h2 {
@@ -241,16 +285,114 @@ button {
     font-size: 1.2rem;
 }
 
+.upload-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.85);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.upload-title {
+    max-width: 100%;
+
+    padding: 0 1rem;
+
+    color: rgba(255,255,255,0.82);
+
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
 .upload-label:hover {
     border-color: rgba(255,255,255,0.3);
 
     background: #141414;
 }
 
+.upload-label.is-dragging {
+    border-color: rgba(255,255,255,0.45);
+
+    background: #181818;
+}
+
+.upload-label.has-file {
+    background: #071d49;
+
+    border-color: #1f6feb;
+
+    box-shadow: 0 0 0 1px rgba(31,111,235,0.28);
+}
+
+.upload-label.has-file:hover {
+    background: #09245a;
+
+    border-color: #3b82f6;
+}
+
+.upload-label.has-file .upload-icon {
+    background: #0b3a82;
+
+    color: #dbeafe;
+
+    position: relative;
+}
+
+.upload-label.has-file .upload-icon::before {
+    content: "";
+
+    width: 22px;
+    height: 28px;
+
+    border: 2px solid #dbeafe;
+    border-radius: 3px;
+
+    display: block;
+}
+
+.upload-label.has-file .upload-icon::after {
+    content: "";
+
+    width: 8px;
+    height: 8px;
+
+    border-left: 2px solid #dbeafe;
+    border-bottom: 2px solid #dbeafe;
+
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    background: #0b3a82;
+}
+
+.upload-label.has-file .upload-title {
+    color: white;
+
+    font-weight: 700;
+}
+
 .upload-label span {
     font-size: 0.9rem;
 
     color: rgba(255,255,255,0.35);
+}
+
+.upload-label .upload-icon {
+    font-size: 1.8rem;
+}
+
+.upload-label .upload-title {
+    font-size: 1.2rem;
 }
 
 input[type="file"] {
