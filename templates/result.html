@@ -5,66 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV Analysis</title>
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ prefix }}/static/style.css">
 </head>
 
 <body>
 
-<div class="result-container">
+<div class="result-shell" data-total="{{ results|length }}">
 
-    <div class="top-bar">
-        <h1>CV</h1>
+    <header class="masthead">
 
-        <a href="/">Analyze Another Resume</a>
-    </div>
-
-    <div class="score-card">
-
-        <div class="score-label">
-            Resume Score
+        <div class="masthead-left">
+            <a class="masthead-mark" href="{{ prefix }}/">CV</a>
+            <span class="masthead-divider" aria-hidden="true"></span>
+            <span class="masthead-label">Candidate Report</span>
         </div>
 
-        <div class="score-number">
-            {{ sections.score }}
-        </div>
+        {% if results|length > 1 %}
+        <nav class="pager" aria-label="Candidate navigation">
+            <button type="button" class="pager-btn" id="pager-prev" aria-label="Previous candidate">&larr;</button>
+            <span class="pager-count">
+                <span id="pager-current">01</span><span class="pager-sep">/</span><span>{{ "%02d"|format(results|length) }}</span>
+            </span>
+            <button type="button" class="pager-btn" id="pager-next" aria-label="Next candidate">&rarr;</button>
+        </nav>
+        {% endif %}
 
-    </div>
+        <a class="masthead-cta" href="{{ prefix }}/dashboard/{{ batch_id }}">Dashboard</a>
+        <a class="masthead-cta" href="{{ prefix }}/">New analysis</a>
 
-    <div class="analysis-grid">
+    </header>
 
-        <div class="analysis-card">
-            <h2>Professional Summary</h2>
-            <p>{{ sections.summary }}</p>
-        </div>
+    <div class="result-body">
 
-        <div class="analysis-card">
-            <h2>Strengths</h2>
-            <pre>{{ sections.strengths }}</pre>
-        </div>
+        {% if results|length > 1 %}
+        <aside class="index-rail" aria-label="All candidates">
+            <div class="index-rail-title">Ranked</div>
+            <ol class="index-list">
+                {% for result in results %}
+                <li>
+                    <button type="button" class="index-item{% if loop.index == 1 %} is-active{% endif %}" data-page="{{ loop.index }}">
+                        <span class="index-rank">{{ "%02d"|format(loop.index) }}</span>
+                        <span class="index-name">{{ result.filename }}</span>
+                        <span class="index-score">{{ result.sections.score }}</span>
+                    </button>
+                </li>
+                {% endfor %}
+            </ol>
+        </aside>
+        {% endif %}
 
-        <div class="analysis-card">
-            <h2>Weaknesses</h2>
-            <pre>{{ sections.weaknesses }}</pre>
-        </div>
+        <main class="dossier-stage">
 
-        <div class="analysis-card">
-            <h2>ATS Analysis</h2>
-            <p>{{ sections.ats }}</p>
-        </div>
+            {% for result in results %}
+            <article class="dossier{% if loop.index == 1 %} is-active{% endif %}" data-page="{{ loop.index }}">
 
-        <div class="analysis-card">
-            <h2>Suggestions</h2>
-            <pre>{{ sections.suggestions }}</pre>
-        </div>
+                <div class="dossier-head">
+                    <div class="dossier-rank">{{ "%02d"|format(loop.index) }}</div>
+                    <div class="dossier-title">
+                        <h1>{{ result.filename }}</h1>
+                        <span class="dossier-sub">Candidate {{ loop.index }} of {{ results|length }}</span>
+                    </div>
+                </div>
 
-        <div class="analysis-card">
-            <h2>Career Level</h2>
-            <p>{{ sections.career_level }}</p>
-        </div>
+                <div class="score-block">
+                    <div class="score-label">Resume Score</div>
+                    <div class="score-number">{{ result.sections.score }}</div>
+                    <div class="score-rule"></div>
+                </div>
+
+                <div class="analysis-grid">
+
+                    <section class="analysis-card span-2">
+                        <h2>Professional Summary</h2>
+                        <p>{{ result.sections.summary }}</p>
+                    </section>
+
+                    <section class="analysis-card">
+                        <h2>Strengths</h2>
+                        <pre>{{ result.sections.strengths }}</pre>
+                    </section>
+
+                    <section class="analysis-card">
+                        <h2>Weaknesses</h2>
+                        <pre>{{ result.sections.weaknesses }}</pre>
+                    </section>
+
+                    <section class="analysis-card">
+                        <h2>ATS Analysis</h2>
+                        <p>{{ result.sections.ats }}</p>
+                    </section>
+
+                    <section class="analysis-card">
+                        <h2>Suggestions</h2>
+                        <pre>{{ result.sections.suggestions }}</pre>
+                    </section>
+
+                    <section class="analysis-card">
+                        <h2>Career Level</h2>
+                        <p>{{ result.sections.career_level }}</p>
+                    </section>
+
+                </div>
+
+            </article>
+            {% endfor %}
+
+        </main>
 
     </div>
 
 </div>
+
+<script src="{{ prefix }}/static/result.js" defer></script>
 
 </body>
 </html>

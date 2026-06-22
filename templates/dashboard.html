@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ prefix }}/static/style.css">
+</head>
+
+<body>
+
+<div class="result-shell">
+
+    <header class="masthead">
+
+        <div class="masthead-left">
+            <a class="masthead-mark" href="{{ prefix }}/">CV</a>
+            <span class="masthead-divider" aria-hidden="true"></span>
+            <span class="masthead-label">Candidate Dashboard</span>
+        </div>
+
+        <a class="masthead-cta" href="{{ prefix }}/result">Report view</a>
+        <a class="masthead-cta" href="{{ prefix }}/">New analysis</a>
+
+    </header>
+
+    <main class="dashboard-stage">
+
+        <div class="dashboard-head">
+            <span class="dashboard-eyebrow">{{ results|length }} candidate{{ "s" if results|length != 1 else "" }} analyzed</span>
+            <h1>Candidate Summary</h1>
+        </div>
+
+        <div class="dashboard-table-wrap">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th class="col-rank">#</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Studies / Institution</th>
+                        <th>Skills</th>
+                        <th>Target Sector</th>
+                        <th class="col-cert">Certifications</th>
+                        <th class="col-score">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td class="col-rank">{{ "%02d"|format(loop.index) }}</td>
+                        <td class="cell-name">{{ result.sections.name | default("Unknown", true) }}</td>
+                        <td>{{ result.sections.age | default("Unknown", true) }}</td>
+                        <td>{{ result.sections.education | default("—", true) }}</td>
+                        <td class="cell-skills">{{ result.sections.skills | default("—", true) }}</td>
+                        <td>{{ result.sections.sector | default("—", true) }}</td>
+                        <td class="col-cert">
+                            <span class="cert-pill{{ ' is-yes' if result.sections.certifications == 'Yes' else '' }}">{{ result.sections.certifications | default("Unknown", true) }}</span>
+                        </td>
+                        <td class="col-score">
+                            <span class="score-pill">{{ result.sections.score }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
